@@ -16,14 +16,14 @@
 # ------------------------------------------------------------------------ #
 # Histórico:
 #
-#   v1.0 06/02/2021
+#   v1.0 06/02/2021 Deyvison Eduardo
 #   v1.0 Criado a função de debug     
-#
+#   v1.1 Formatação de mensagens
 #
 # ------------------------------- VARIÁVEIS ----------------------------------------- #
-CHAVE_DEBUG=0
-NIVEL_DEBUG=0
-MENSAGEM_USO="
+KEY_DEBUG=0
+LEVEL_DEBUG=0
+MESSAGE_HELP="
     $(basename $0) [OPÇÕES]
 
     -h   - Menu de ajuda
@@ -31,29 +31,34 @@ MENSAGEM_USO="
     -d 1 - Nivel de Debug 1
     -d 2 - Nivel de Debug 2
 "
-VERSAO="v1.0"
+VERSION="v1.1"
+
+
+NEGRITO="\033[1m"
+COLOR_DEBUG_1="\033[34;1m"
+COLOR_DEBUG_2="\033[31;1m"
 # ------------------------------- FUNÇÃO ----------------------------------------- #
-# paramentro menor ou igual ao NIVEL_DEBUG
+# paramentro menor ou igual ao LEVEL_DEBUG
 Debugar(){
-	[ $1 -le $NIVEL_DEBUG ] && echo "Debug $* -----------"
+	[ $1 -le $LEVEL_DEBUG ] && echo -e "${2}Debug --- $* ---"
 }
 
 
-Soma(){
-	local total=0
+ADD(){
+	local result=0
 	for i in $(seq 1 25)
        	do 
-		Debugar 1 "Entrei com valor: $i"
-		total=$(($total+$i))
-		Debugar 2 "Sair com valor: $total"
+		Debugar 1 "${COLOR_DEBUG_1}" "--- Entrei com valor: $i"
+		result=$(($result+$i))
+		Debugar 2  "${COLOR_DEBUG_2}" "--- Sair com valor: $result"
 	done
 }
 # -------------------------------- EXECUÇÃO ---------------------------------------- #
 case "$1" in
-	-h) echo "$MENSAGEM_USO" && exit 0 ;;
-    -v) echo "$VERSAO" && exit 0 ;;
-	-d) [ $2 ] && NIVEL_DEBUG=$2 ;;
-	*) Soma ;;
+	-h) echo -e "${NEGRITO}$MESSAGE_HELP" && exit 0 ;;
+    -v) echo -e "${NEGRITO}$VERSION" && exit 0 ;;
+	-d) [ $2 ] && LEVEL_DEBUG=$2 ;;
+	*) ADD ;;
 esac
 
-Soma
+ADD
